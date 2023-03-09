@@ -7,6 +7,7 @@ runs:
       uses: actions/checkout@v3
     - name: Find trailing spaces
       run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
+      shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
@@ -17,6 +18,7 @@ runs:
         go-version: 'latest'
     - name: Run update-dependabot
       run: go run github.com/black-desk/update-dependabot@latest
+      shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
