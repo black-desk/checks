@@ -19,12 +19,6 @@ runs:
     - name: Run update-dependabot
       run: go run github.com/black-desk/update-dependabot@latest
       shell: bash
-    - run: git status
-      shell: bash
-    - name: Generate suggestion by reviewdog
-      uses: reviewdog/action-suggester@v1
-      with:
-        tool_name: update-dependabot
-        fail_on_error: true
-    - run: git status
+    - name: Check if dependabot.yml should be updated
+      run: test -z "$(git status --porcelain)" || echo '.github/dependabot.yml should be updated, check https://github.com/black-desk/update-dependabot' && false
       shell: bash
