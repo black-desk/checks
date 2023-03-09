@@ -24,5 +24,3 @@ runs:
       with:
         tool_name: update-dependabot
         fail_on_error: true
-    - name: Lint commit message
-      uses: wagoid/commitlint-github-action@v5
