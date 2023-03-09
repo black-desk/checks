@@ -1,3 +1,3 @@
 # Github action checks for me
 
-Just some github action I would like to apply to ervey projects I own.
+Just some github actions I would like to apply to ervey projects I own.
