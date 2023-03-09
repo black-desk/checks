@@ -11,5 +11,20 @@ runs:
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
+        fail_on_error: true
+    - name: Setup go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 'stable'
+    - name: Run update-dependabot
+      run: go run github.com/black-desk/update-dependabot@latest
+      shell: bash
+    - run: git status
+      shell: bash
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
         tool_name: update-dependabot
         fail_on_error: true
+    - run: git status
+      shell: bash
