@@ -5,8 +5,6 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 # for commitlint
     - name: Find trailing spaces
       run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
       shell: bash
@@ -24,5 +22,38 @@ runs:
     - name: Check if dependabot.yml should be updated
       run: test -z "$(git status --porcelain)" || ( echo '.github/dependabot.yml should be updated, check https://github.com/black-desk/update-dependabot' && false )
       shell: bash
+    - name: Checkout history
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Lint commit message
       uses: wagoid/commitlint-github-action@v5
+    - name: Checkout submodules
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Run cmake-format
+      run: |
+        if [ -d .format ]; then
+          sudo apt install -y pip &&
+          pip install --user cmake-format pyyaml &&
+          find . -type f -a \( -name CMakeLists.txt -o -iname '*.cmake' \) -exec cmake-format -i \{\} \;
+        fi
+      shell: bash
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        tool_name: cmake-format
+        fail_on_error: true
+    - name: Run clang-format
+      run: |
+        if [ -d .format ]; then
+          sudo apt install -y clang-format &&
+          find . -type f -a \( -iname '*.c' -o -iname '.cpp' -o -iname '.cxx' -o -iname '.h' -o -iname '.hpp' \) -exec clang-format -i \{\} \;
+        fi
+      shell: bash
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        tool_name: clang-format
+        fail_on_error: true
