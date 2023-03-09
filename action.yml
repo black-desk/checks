@@ -49,7 +49,7 @@ runs:
       run: |
         if [ -d .format ]; then
           sudo apt install -y clang-format &&
-          find . -type f -a \( -iname '*.c' -o -iname '.cpp' -o -iname '.cxx' -o -iname '.h' -o -iname '.hpp' \) -exec clang-format -i \{\} \;
+          find . -type f -a \( -iname '*.c' -o -iname '*.cpp' -o -iname '*.cxx' -o -iname '*.h' -o -iname '*.hpp' \) -exec clang-format -i \{\} \;
         fi
       shell: bash
     - name: Generate suggestion by reviewdog
