@@ -1,0 +1,26 @@
+name: 'Checks'
+description: 'Some checks I apply to my personal projects.'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Find trailing spaces
+      run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        fail_on_error: true
+    - name: Setup go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 'latest'
+    - name: Run update-dependabot
+      run: go run github.com/black-desk/update-dependabot@latest
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        tool_name: update-dependabot
+        fail_on_error: true
+    - name: Lint commit message
+      uses: wagoid/commitlint-github-action@v5
