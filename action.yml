@@ -19,6 +19,9 @@ runs:
     - name: Run update-dependabot
       run: go run github.com/black-desk/update-dependabot@latest
       shell: bash
+    - name: Add dependabot.yml for reviewdog
+      run: git add ./.github/dependabot.yml
+      shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
