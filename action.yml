@@ -22,3 +22,5 @@ runs:
     - name: Check if dependabot.yml should be updated
       run: test -z "$(git status --porcelain)" || echo '.github/dependabot.yml should be updated, check https://github.com/black-desk/update-dependabot' && false
       shell: bash
+    - name: Lint commit message
+      uses: wagoid/commitlint-github-action@v5
