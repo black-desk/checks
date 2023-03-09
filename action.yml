@@ -15,7 +15,7 @@ runs:
     - name: Setup go
       uses: actions/setup-go@v3
       with:
-        go-version: 'latest'
+        go-version: 'stable'
     - name: Run update-dependabot
       run: go run github.com/black-desk/update-dependabot@latest
       shell: bash
