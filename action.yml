@@ -1,5 +1,8 @@
 name: 'Checks'
 description: 'Some checks I apply to my personal projects.'
+defaults:
+  run:
+    shell: bash
 runs:
   using: "composite"
   steps:
@@ -7,7 +10,6 @@ runs:
       uses: actions/checkout@v3
     - name: Find trailing spaces
       run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
-      shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
@@ -18,17 +20,14 @@ runs:
         go-version: 'stable'
     - name: Run update-dependabot
       run: go run github.com/black-desk/update-dependabot@latest
-      shell: bash
     - name: Check if dependabot.yml should be updated
       run: test -z "$(git status --porcelain)" || ( echo '.github/dependabot.yml should be updated, check https://github.com/black-desk/update-dependabot' && false )
-      shell: bash
     - name: Checkout history
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Prepare commitlint config
       run: cp "$GITHUB_ACTION_PATH/commitlint.config.js" ./
-      shell: bash
     - name: Lint commit message
       uses: wagoid/commitlint-github-action@v5
       with:
@@ -45,7 +44,6 @@ runs:
           pip install --user cmake-format pyyaml &&
           find . -type f -a \( -name CMakeLists.txt -o -iname '*.cmake' \) -exec cmake-format -i \{\} \;
         fi
-      shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
@@ -57,7 +55,6 @@ runs:
           sudo apt install -y clang-format &&
           find . -type f -a \( -iname '*.c' -o -iname '*.cpp' -o -iname '*.cxx' -o -iname '*.h' -o -iname '*.hpp' \) -exec clang-format -i \{\} \;
         fi
-      shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
