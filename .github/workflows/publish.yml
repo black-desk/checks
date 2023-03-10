@@ -1,0 +1,36 @@
+name: Auto publish
+
+# copy from https://github.com/actions/publish-action/blob/3f069f6e86735fe551a3ef85d2466391e94d7fea/.github/workflows/release-new-action-version.yml
+
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+    inputs:
+      TAG_NAME:
+        description: 'Tag name that the major tag will point to'
+        required: true
+
+env:
+  TAG_NAME: ${{ github.event.inputs.TAG_NAME || github.event.release.tag_name }}
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  update_tag:
+    name: Update the major tag to include the ${{ github.event.inputs.TAG_NAME || github.event.release.tag_name }} changes
+    # Remember to configure the releaseNewActionVersion environment with required approvers in the repository settings
+    environment:
+      name: releaseNewActionVersion
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Update the ${{ env.TAG_NAME }} tag
+        id: update-major-tag
+        uses: actions/publish-action@v0.2.2
+        with:
+          source-tag: ${{ env.TAG_NAME }}
