@@ -33,7 +33,7 @@ runs:
       uses: wagoid/commitlint-github-action@v5
       with:
         configFile:
-          ./commitlint.config.js
+          .format/commitlint.config.js
     - name: Checkout submodules
       uses: actions/checkout@v3
       with:
