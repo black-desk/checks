@@ -8,9 +8,7 @@ on:
 jobs:
   release:
     runs-on: "ubuntu-latest"
-    permissions:
-       contents: write
-       actions: read
+    permissions: write_all
     steps:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
