@@ -9,6 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     name: Checks
     steps:
-      - uses: actions/checkout@v3
-      - id: checks
-        uses: black-desk/checks@v0.1.11
+      - uses: black-desk/checks@v0.1.11
