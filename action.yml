@@ -26,8 +26,14 @@ runs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Prepare commitlint config
+      run: cp "$GITHUB_ACTION_PATH/commitlint.config.js" ./
+      shell: bash
     - name: Lint commit message
       uses: wagoid/commitlint-github-action@v5
+      with:
+        configFile:
+          .format/commitlint.config.js
     - name: Checkout submodules
       uses: actions/checkout@v3
       with:
