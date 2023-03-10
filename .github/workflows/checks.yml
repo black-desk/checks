@@ -9,4 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Checks
     steps:
-      - uses: black-desk/checks@v0.1.11
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: ./
