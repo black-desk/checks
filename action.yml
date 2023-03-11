@@ -38,7 +38,7 @@ runs:
           .format/commitlint.config.js
     - name: Run cmake-format
       run: |
-        if [ -d .format ]; then
+        if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.cmake-format')" ] ; then
           sudo apt install -y pip &&
           pip install --user cmake-format pyyaml &&
           find . -type f -a \( -name CMakeLists.txt -o -iname '*.cmake' \) -exec cmake-format -i \{\} \;
@@ -51,7 +51,7 @@ runs:
         fail_on_error: true
     - name: Run clang-format
       run: |
-        if [ -d .format ]; then
+        if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.clang-format')" ] ; then
           sudo apt install -y clang-format &&
           find . -type f -a \( -iname '*.c' -o -iname '*.cpp' -o -iname '*.cxx' -o -iname '*.h' -o -iname '*.hpp' \) -exec clang-format -i \{\} \;
         fi
