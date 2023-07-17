@@ -32,7 +32,7 @@ runs:
         submodules: recursive
     - name: Run cmake-format
       run: |
-        if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.cmake-format')" ] ; then
+        if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.cmake-format.py')" ] ; then
           sudo apt install -y pip &&
           pip install --user cmake-format pyyaml &&
           find . -type f -a \( -name CMakeLists.txt -o -iname '*.cmake' \) -exec cmake-format -i \{\} \;
