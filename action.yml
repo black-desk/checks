@@ -30,6 +30,19 @@ runs:
       uses: actions/checkout@v3
       with:
         submodules: recursive
+    - name: Run cmake-format
+      run: |
+        if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.cmake-format')" ] ; then
+          sudo apt install -y pip &&
+          pip install --user cmake-format pyyaml &&
+          find . -type f -a \( -name CMakeLists.txt -o -iname '*.cmake' \) -exec cmake-format -i \{\} \;
+        fi
+      shell: bash
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        tool_name: cmake-format
+        fail_on_error: true
     - name: Run clang-format
       run: |
         if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.clang-format')" ] ; then
