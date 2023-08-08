@@ -33,7 +33,7 @@ runs:
     - name: Run cmake-format
       run: |
         if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.cmake-format.py')" ] ; then
-          sudo apt update && sudo apt dist-upgrade -y && sudo apt install -y pip &&
+          sudo apt update && sudo apt install -y pip &&
           pip install --user cmake-format pyyaml &&
           find . -type f -a \( -name CMakeLists.txt -o -iname '*.cmake' \) -exec cmake-format -i \{\} \;
         fi
@@ -46,7 +46,7 @@ runs:
     - name: Run clang-format
       run: |
         if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.clang-format')" ] ; then
-          sudo apt update && sudo apt dist-upgrade -y && sudo apt install -y clang-format-15 &&
+          sudo apt update && sudo apt install -y clang-format-15 &&
           find . -type f -a \( -iname '*.c' -o -iname '*.cpp' -o -iname '*.cxx' -o -iname '*.h' -o -iname '*.hpp' \) -exec clang-format-15 -i \{\} \;
         fi
       shell: bash
