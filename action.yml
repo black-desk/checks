@@ -43,13 +43,21 @@ runs:
       with:
         tool_name: cmake-format
         fail_on_error: true
-    - name: Run clang-format
+    - name: Find clang-format files
       run: |
-        if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.clang-format')" ] ; then
-          sudo apt update && sudo apt install -y clang-format-15 &&
-          find . -type f -a \( -iname '*.c' -o -iname '*.cpp' -o -iname '*.cxx' -o -iname '*.h' -o -iname '*.hpp' \) -exec clang-format-15 -i \{\} \;
+        if [ -f .clang-format ]; then
+          echo "NEED_CLANG_FORMAT=True" >> $GITHUB_ENV
         fi
       shell: bash
+    - name: The demo step has failed
+      uses: DoozyX/clang-format-lint-action@v0.16.2
+      if: ${{ env.NEED_CLANG_FORMAT == 'True' }}
+      with:
+        source: '.'
+        exclude: './third_party ./external ./3rd_party'
+        extensions: 'c,cpp,cxx,cc,h,hpp,hh'
+        clangFormatVersion: 16
+        inplace: True
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
