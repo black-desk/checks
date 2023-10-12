@@ -4,7 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Find trailing spaces
       run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
       shell: bash
@@ -27,7 +27,7 @@ runs:
       run: test -z "$(git status --porcelain)" || ( echo '.github/dependabot.yml should be updated, check https://github.com/black-desk/update-dependabot' && false )
       shell: bash
     - name: Checkout submodules
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Run cmake-format
@@ -56,7 +56,7 @@ runs:
         tool_name: clang-format
         fail_on_error: true
     - name: Checkout histroy
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: Lint commit message
