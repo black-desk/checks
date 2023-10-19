@@ -34,7 +34,7 @@ runs:
         submodules: recursive
     - name: Run go build and test
       run: |
-        if [ find . -name '*.go' ] ; then
+        if [ -n "$(find . -name '*.go')" ] ; then
           sudo apt update && sudo apt install -y golang-go &&
           go build ./... &&
           export COVER_DIR=/tmp/io.github.black-desk.checks &&
@@ -48,7 +48,7 @@ runs:
       shell: bash
     - name: Run gofmt
       run: |
-        if [ find . -name '*.go' ] ; then
+        if [ -n "$(find . -name '*.go')" ] ; then
           sudo apt update && sudo apt install -y golang-go &&
           go fmt ./...
         fi
