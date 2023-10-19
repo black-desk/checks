@@ -30,6 +30,26 @@ runs:
       uses: actions/checkout@v4
       with:
         submodules: recursive
+    - name: Run go build and test
+      run: |
+        if [ find . -name '*.go' ] ; then
+          sudo apt update && sudo apt install -y golang-go &&
+          go build ./... &&
+          go test ./...
+        fi
+      shell: bash
+    - name: Run gofmt
+      run: |
+        if [ find . -name '*.go' ] ; then
+          sudo apt update && sudo apt install -y golang-go &&
+          go fmt ./...
+        fi
+      shell: bash
+    - name: Generate suggestion by reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        tool_name: go fmt
+        fail_on_error: true
     - name: Run cmake-format
       run: |
         if [ -d .format ] && [ -n "$(find . -not -path './.format/*' \( -type f -o -type l \) -name '.cmake-format.py')" ] ; then
