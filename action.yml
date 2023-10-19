@@ -37,7 +37,7 @@ runs:
         if [ find . -name '*.go' ] ; then
           sudo apt update && sudo apt install -y golang-go &&
           go build ./... &&
-          go test ./...
+          go test ./... -v --ginkgo.vv
         fi
       shell: bash
     - name: Run gofmt
