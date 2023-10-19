@@ -53,7 +53,7 @@ runs:
         export COVER_DIR=/tmp/io.github.black-desk.checks &&
         mkdir -p $COVER_DIR &&
         go test ./... -v --ginkgo.vv -coverprofile=${COVER_DIR}/go-test-cover.out &&
-        go tool coverage -func=${COVER_DIR}/go-test-cover.out -o ${COVER_DIR}/go-test-cover.txt &&
+        go tool cover -func=${COVER_DIR}/go-test-cover.out -o ${COVER_DIR}/go-test-cover.txt &&
         echo golang coverage report > $GITHUB_STEP_SUMMARY &&
         echo '```' >> $GITHUB_STEP_SUMMARY &&
         cat ${COVER_DIR}/go-test-cover.out >> $GITHUB_STEP_SUMMARY &&
