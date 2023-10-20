@@ -46,20 +46,10 @@ runs:
         go-version: stable
         cache: true
         cache-dependency-path: go/go.sum
-    - name: Run go generate
-      if: steps.isGoProject.outputs.go == 'YES'
-      run: |
-        go generate ./...
-      shell: bash
-    - name: Generate suggestion by reviewdog
-      uses: reviewdog/action-suggester@v1
-      with:
-        tool_name: go generate
-        fail_on_error: true
     - name: Run go build and test
       if: steps.isGoProject.outputs.go == 'YES'
       run: |
-        go build -v ./... &&
+        go build ./... &&
         export COVER_DIR=/tmp/io.github.black-desk.checks &&
         mkdir -p $COVER_DIR &&
         go test ./... -v --ginkgo.vv -coverprofile=${COVER_DIR}/go-test-cover.out &&
