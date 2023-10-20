@@ -49,7 +49,7 @@ runs:
     - name: Run go build and test
       if: steps.isGoProject.outputs.go == 'YES'
       run: |
-        go build ./... &&
+        go build -v ./... &&
         export COVER_DIR=/tmp/io.github.black-desk.checks &&
         mkdir -p $COVER_DIR &&
         go test ./... -v --ginkgo.vv -coverprofile=${COVER_DIR}/go-test-cover.out &&
