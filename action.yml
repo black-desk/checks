@@ -38,6 +38,8 @@ runs:
         reporter: github-pr-review
     - name: Generate suggestion from shfmt by reviewdog
       uses: reviewdog/action-shfmt@v1
+      with:
+        shfmt_flags: '-i 0'
     - name: Is it a go project?
       id: isGoProject
       run: |
