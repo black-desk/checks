@@ -32,6 +32,10 @@ runs:
       uses: actions/checkout@v4
       with:
         submodules: recursive
+    - name: Generate suggestion from shellcheck by reviewdog
+      uses: reviewdog/action-shellcheck@v1
+      with:
+        reporter: github-pr-review
     - name: Is it a go project?
       id: isGoProject
       run: |
