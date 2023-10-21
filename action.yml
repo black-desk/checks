@@ -35,7 +35,7 @@ runs:
     - name: Is it a go project?
       id: isGoProject
       run: |
-        if [ -n "$(find . -name '*.go')" ] ; then
+        if [ -e ./go.mod ] ; then
           echo "go=YES" >> $GITHUB_OUTPUT
         fi
       shell: bash
