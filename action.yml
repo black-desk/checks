@@ -37,7 +37,7 @@ runs:
       with:
         reporter: github-pr-review
     - name: Generate suggestion from shfmt by reviewdog
-      uses: reviewdog/action-shfmt@v1
+      uses: black-desk/action-shfmt@blackdesk/main
       with:
         shfmt_flags: '-i 0'
     - name: Is it a go project?
