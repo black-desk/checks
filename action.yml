@@ -5,6 +5,12 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@v4
+    - name: Checkout .format
+      run: |
+        if [ -d .format ] ; then
+          git submodule update --init .format
+        fi
+      shell: bash
     - name: Find trailing spaces
       run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
       shell: bash
@@ -28,18 +34,6 @@ runs:
       with:
         tool_name: update-dependabot
         fail_on_error: true
-    - name: Checkout submodules
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    - name: Generate suggestion from shellcheck by reviewdog
-      uses: reviewdog/action-shellcheck@v1
-      with:
-        reporter: github-pr-review
-    - name: Generate suggestion from shfmt by reviewdog
-      uses: black-desk/action-shfmt@blackdesk/main
-      with:
-        shfmt_flags: '-i 0'
     - name: Is it a go project?
       id: isGoProject
       run: |
@@ -54,19 +48,6 @@ runs:
         go-version: stable
         cache: true
         cache-dependency-path: ${{github.workspace}}/go.sum
-    - name: Run go build and test
-      if: steps.isGoProject.outputs.go == 'YES'
-      run: |
-        go build -v ./... &&
-        export COVER_DIR=/tmp/io.github.black-desk.checks &&
-        mkdir -p $COVER_DIR &&
-        go test ./... -v --ginkgo.vv -coverprofile=${COVER_DIR}/go-test-cover.out &&
-        go tool cover -func=${COVER_DIR}/go-test-cover.out -o ${COVER_DIR}/go-test-cover.txt &&
-        echo golang coverage report > $GITHUB_STEP_SUMMARY &&
-        echo '```' >> $GITHUB_STEP_SUMMARY &&
-        cat ${COVER_DIR}/go-test-cover.out >> $GITHUB_STEP_SUMMARY &&
-        echo '```' >> $GITHUB_STEP_SUMMARY
-      shell: bash
     - name: Run gofmt
       if: steps.isGoProject.outputs.go == 'YES'
       run: |
@@ -96,7 +77,7 @@ runs:
           echo "NEED_CLANG_FORMAT=True" >> $GITHUB_ENV
         fi
       shell: bash
-    - name: The demo step has failed
+    - name: Run clang-format
       uses: DoozyX/clang-format-lint-action@v0.16.2
       if: ${{ env.NEED_CLANG_FORMAT == 'True' }}
       with:
@@ -110,6 +91,27 @@ runs:
       with:
         tool_name: clang-format
         fail_on_error: true
+    - name: Generate suggestion from shellcheck by reviewdog
+      uses: reviewdog/action-shellcheck@v1
+      with:
+        reporter: github-pr-review
+    - name: Generate suggestion from shfmt by reviewdog
+      uses: black-desk/action-shfmt@blackdesk/main
+      with:
+        shfmt_flags: '-i 0'
+    - name: Run go build and test
+      if: steps.isGoProject.outputs.go == 'YES'
+      run: |
+        go build -v ./... &&
+        export COVER_DIR=/tmp/io.github.black-desk.checks &&
+        mkdir -p $COVER_DIR &&
+        go test ./... -v --ginkgo.vv -coverprofile=${COVER_DIR}/go-test-cover.out &&
+        go tool cover -func=${COVER_DIR}/go-test-cover.out -o ${COVER_DIR}/go-test-cover.txt &&
+        echo golang coverage report > $GITHUB_STEP_SUMMARY &&
+        echo '```' >> $GITHUB_STEP_SUMMARY &&
+        cat ${COVER_DIR}/go-test-cover.out >> $GITHUB_STEP_SUMMARY &&
+        echo '```' >> $GITHUB_STEP_SUMMARY
+      shell: bash
     - name: Checkout histroy
       uses: actions/checkout@v4
       with:
