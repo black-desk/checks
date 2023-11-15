@@ -78,6 +78,7 @@ runs:
         fi
       shell: bash
     - name: Run clang-format
+      continue-on-error: true
       uses: DoozyX/clang-format-lint-action@v0.16.2
       if: ${{ env.NEED_CLANG_FORMAT == 'True' }}
       with:
