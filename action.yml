@@ -43,7 +43,7 @@ runs:
       shell: bash
     - name: Set up Go
       if: steps.isGoProject.outputs.go == 'YES'
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
         go-version: stable
         cache: true
