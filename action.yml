@@ -32,6 +32,7 @@ runs:
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
+        reviewdog_flags: -reporter=github-pr-check
         tool_name: update-dependabot
         fail_on_error: true
     - name: Is it a go project?
@@ -56,6 +57,7 @@ runs:
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
+        reviewdog_flags: -reporter=github-pr-check
         tool_name: go fmt
         fail_on_error: true
     - name: Run cmake-format
@@ -69,6 +71,7 @@ runs:
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
+        reviewdog_flags: -reporter=github-pr-check
         tool_name: cmake-format
         fail_on_error: true
     - name: Find clang-format files
@@ -90,6 +93,7 @@ runs:
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
       with:
+        reviewdog_flags: -reporter=github-pr-check
         tool_name: clang-format
         fail_on_error: true
     - name: Generate suggestion from shellcheck by reviewdog
@@ -100,6 +104,7 @@ runs:
       uses: black-desk/action-shfmt@blackdesk/main
       with:
         shfmt_flags: '-i 0'
+        reviewdog_flags: -reporter=github-pr-check
     - name: Run go build and test
       if: steps.isGoProject.outputs.go == 'YES'
       run: |
