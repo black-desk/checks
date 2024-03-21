@@ -12,7 +12,7 @@ runs:
         fi
       shell: bash
     - name: Find trailing spaces
-      run: find . -type f -not -path "./.git/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
+      run: find . -type f -not -path "./.git/*" -not -path "./external/*" -exec grep -Iq . {} \; -print | xargs -L1 sed -i 's/[[:space:]]*$//'
       shell: bash
     - name: Generate suggestion by reviewdog
       uses: reviewdog/action-suggester@v1
