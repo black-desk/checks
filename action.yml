@@ -121,4 +121,4 @@ runs:
       uses: wagoid/commitlint-github-action@v6
       with:
         configFile:
-          .format/commitlint.config.js
+          .format/commitlint.config.mjs
